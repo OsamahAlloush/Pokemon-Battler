@@ -1,0 +1,496 @@
+package org.example;
+
+
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class InputHelper {
+    private ArrayList<Pokemon> pokedex;
+    private Scanner scanner;
+
+    public InputHelper(Scanner scanner) {
+        this.pokedex = new ArrayList<>();
+        this.scanner = scanner;
+    }
+
+    public void displayAllPokemon() {
+        System.out.println("\n ... All the Pokemons... :");
+        if (pokedex.isEmpty()) {
+            System.out.println("No Pokemons in the pokedex yet");
+        } else {
+            for (int i = 0; i < pokedex.size(); i++) {
+                Pokemon p = pokedex.get(i);
+                System.out.println((i + 1) + ". " + p.getName() + " (Type: " + p.getType() +
+                        " | HP: " + p.getCurrentHp() + "/" + p.getMaxHp() + ")");
+
+                if (p.getAttacks() != null && !p.getAttacks().isEmpty()) {
+                    System.out.print("   Attacks: ");
+                    for (int j = 0; j < p.getAttacks().size(); j++) {
+                        System.out.print(p.getAttacks().get(j).getName() + " (" + p.getAttacks().get(j).getBaseDamage() + " dmg)");
+                        if (j < p.getAttacks().size() - 1) {
+                            System.out.print(" | ");
+                        }
+                    }
+                    System.out.println();
+                } else {
+                    System.out.println("   Attacks: No attacks yet!");
+                }
+            }
+        }
+    }
+
+    // 2.Add new Pokemon
+    public void addNewPokemon() {
+        System.out.println("\n--- Add a New Pokemon ---");
+
+        System.out.print("Enter Pokemon name: ");
+        String newName;
+        while (true) {
+            newName = scanner.nextLine().trim();
+            if (!newName.matches("[a-zA-Z ]+")) {
+                System.out.print("Error: Name must contain letters only! Enter name again: ");
+                continue;
+            }
+            boolean isDuplicated = false;
+            for (Pokemon pokemon : pokedex) {
+                if (pokemon.getName().equalsIgnoreCase(newName)) {
+                    isDuplicated = true;
+                    break;
+                }
+            }
+            if (isDuplicated) {
+                System.out.print("Error: Name already exists! Please try another name: ");
+            } else {
+                break;
+            }
+        }
+
+        Type newType = null;
+        while (true) {
+            System.out.println("Choose Type: 1.NORMAL, 2.FIRE, 3.WATER, 4.GRASS, 5.ELECTRIC, 6.AIR, 7.FIGHTING, 8.DARK");
+            System.out.print("Enter type number: ");
+            String typeInput = scanner.nextLine().trim();
+            switch (typeInput) {
+                case "1": newType = Type.NORMAL; break;
+                case "2": newType = Type.FIRE; break;
+                case "3": newType = Type.WATER; break;
+                case "4": newType = Type.GRASS; break;
+                case "5": newType = Type.ELECTRIC; break;
+                case "6": newType = Type.AIR; break;
+                case "7": newType = Type.FIGHTING; break;
+                case "8": newType = Type.DARK; break;
+                default:
+                    System.out.println("Invalid choice, please choose another number.");
+                    continue;
+            }
+            break;
+        }
+
+        int newHp = 0;
+        while (true) {
+            System.out.print("Enter Max HP (must be greater than 0): ");
+            try {
+                newHp = Integer.parseInt(scanner.nextLine().trim());
+                if (newHp > 0) {
+                    break;
+                } else {
+                    System.out.println("HP cannot be zero or negative.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input! Please enter numbers only.");
+            }
+        }
+
+
+        Pokemon newPokemon = new Pokemon(newName, newType, newHp, newHp);
+
+        // --- Add attacks ---
+        while (true) {
+            if (newPokemon.getAttacks() != null && newPokemon.getAttacks().size() >= 4) {
+                System.out.println("Maximum of 4 attacks reached for this Pokemon.");
+                break;
+            }
+
+            System.out.print("Do you want to add an attack for " + newName + "? (y/n): ");
+            String addAttackChoice = scanner.nextLine().trim().toLowerCase();
+
+            if (addAttackChoice.equals("n") || addAttackChoice.equals("no")) {
+                break;
+            } else if (addAttackChoice.equals("y") || addAttackChoice.equals("yes")) {
+                System.out.print("Enter attack name: ");
+                String atkName;
+                while (true) {
+                    atkName = scanner.nextLine().trim();
+                    if (!atkName.matches("[a-zA-Z ]+")) {
+                        System.out.print("Error: Name must contain letters only! Enter name again: ");
+                        continue;
+                    }
+                    boolean isAttackDuplicated = false;
+                    if (newPokemon.getAttacks() != null) {
+                        for (Attack existingAttack : newPokemon.getAttacks()){
+                            if (existingAttack.getName().equalsIgnoreCase(atkName)) {
+                                isAttackDuplicated = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (isAttackDuplicated) {
+                        System.out.print("Error: Name already exists! Please try another name: ");
+                    } else {
+                        break;
+                    }
+                }
+                int dmg = 0;
+                while (true) {
+                    System.out.print("Enter base damage: ");
+                    try {
+                        dmg = Integer.parseInt(scanner.nextLine().trim());
+                        if (dmg >= 0) break;
+                        System.out.println("Damage cannot be negative.");
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid input! Please enter numbers only.");
+                    }
+                }
+
+                int acc = 0;
+                while (true) {
+                    System.out.print("Enter accuracy (1-100): ");
+                    try {
+                        acc = Integer.parseInt(scanner.nextLine().trim());
+                        if (acc > 0 && acc <= 100) break;
+                        System.out.println("Accuracy must be between 1 and 100.");
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid input! Please enter numbers only.");
+                    }
+                }
+
+                newPokemon.addAttack(new Attack(atkName, dmg, acc, newPokemon.getType()));
+
+            } else {
+                System.out.println("Invalid choice! Please answer with 'y' or 'n'.");
+            }
+        }
+
+        pokedex.add(newPokemon);
+        System.out.println("\nSuccess! " + newName + " has been completely added to the Pokedex.\n");
+    }
+    // 3. edit pokemon
+    public void editExistingPokemon() {
+        System.out.println("\n--- Edit Pokemon ---");
+        if (pokedex.isEmpty()) {
+            System.out.println("The Pokedex is empty! Nothing to edit.\n");
+            return;
+        }
+
+        while (true) {
+            for (int i = 0; i < pokedex.size(); i++) {
+                System.out.println((i + 1) + ". " + pokedex.get(i).getName());
+            }
+            System.out.println("0. Return to main menu");
+            System.out.print("Enter the number of the Pokemon you want to edit: ");
+            try {
+                int userInput = Integer.parseInt(scanner.nextLine().trim());
+                if (userInput == 0) {
+                    System.out.println("Returning to main menu.");
+                    return;
+                }
+                int index = userInput - 1;
+                if (index >= 0 && index < pokedex.size()) {
+
+                    Pokemon p = pokedex.get(index);
+                    boolean keepEditing = true;
+
+                    while (keepEditing) {
+                        System.out.println("\nEditing: " + p.getName());
+                        System.out.println("1. Change Name");
+                        System.out.println("2. Change Type");
+                        System.out.println("3. Change HP");
+                        System.out.println("4. Add Attack");
+                        System.out.println("5. View and delete attacks");
+                        System.out.println("0. Back to Pokemon list");
+                        System.out.print("Choose an option: ");
+
+                        String editChoice = scanner.nextLine().trim();
+                        switch (editChoice) {
+                            case "0":
+                                System.out.println("Returning to Pokemon list...");
+                                keepEditing = false;
+                                break;
+                            case "1":
+                                System.out.print("Enter new name: ");
+                                String updatedName;
+                                while (true) {
+                                    updatedName = scanner.nextLine().trim();
+                                    if (!updatedName.matches("[a-zA-Z ]+")) {
+                                        System.out.print("Error: Name must contain letters only! Enter name again: ");
+                                        continue;
+                                    }
+                                    boolean isDuplicated = false;
+                                    for (int i = 0; i < pokedex.size(); i++) {
+                                        if (pokedex.get(i).getName().equalsIgnoreCase(updatedName)) {
+                                            isDuplicated = true;
+                                            break;
+                                        }
+                                    }
+                                    if (isDuplicated) {
+                                        System.out.print("Error: name already exists! Please try another name: ");
+                                    } else {
+                                        p.setName(updatedName);
+                                        System.out.println("Name updated successfully!");
+                                        break;
+                                    }
+                                }
+                                break;
+                            case "2":
+                                while (true) {
+                                    System.out.println("Choose Type: 1.NORMAL, 2.FIRE, 3.WATER, 4.GRASS, 5.ELECTRIC, 6.AIR, 7.FIGHTING, 8.DARK");
+                                    System.out.print("Enter type number: ");
+                                    String typeInput = scanner.nextLine().trim();
+                                    switch (typeInput) {
+                                        case "1": p.setType(Type.NORMAL); break;
+                                        case "2": p.setType(Type.FIRE); break;
+                                        case "3": p.setType(Type.WATER); break;
+                                        case "4": p.setType(Type.GRASS); break;
+                                        case "5": p.setType(Type.ELECTRIC); break;
+                                        case "6": p.setType(Type.AIR); break;
+                                        case "7": p.setType(Type.FIGHTING); break;
+                                        case "8": p.setType(Type.DARK); break;
+                                        default:
+                                            System.out.println("Error: Invalid choice, please choose another number.");
+                                            continue;
+                                    }
+                                    System.out.println("Type updated successfully!");
+                                    break;
+                                }
+                                break;
+                            case "3":
+                                while (true) {
+                                    System.out.print("Enter new HP: ");
+                                    try {
+                                        int newHp = Integer.parseInt(scanner.nextLine().trim());
+                                        if (newHp > 0) {
+                                            p.setCurrentHp(newHp);
+                                            System.out.println("HP updated successfully!");
+                                            break;
+                                        } else {
+                                            System.out.println("HP cannot be zero or negative.");
+                                        }
+                                    } catch (NumberFormatException e) {
+                                        System.out.println("Invalid input! Please enter numbers only.");
+                                    }
+                                }
+                                break;
+                            case "4":
+                                if (p.getAttacks() != null && p.getAttacks().size() >= 4) {
+                                    System.out.println("Error: This Pokemon already has 4 attacks. Delete one first.");
+                                    break;
+                                }
+
+                                String atkName;
+                                while (true) {
+                                    System.out.print("Enter attack name: ");
+                                    atkName = scanner.nextLine().trim();
+                                    if (!atkName.matches("[a-zA-Z ]+")) {
+                                        System.out.print("Error: Attack name must contain letters only! Enter name again: ");
+                                        continue;
+                                    }
+
+
+                                    boolean isAttackDuplicated = false;
+                                    if (p.getAttacks() != null) {
+                                        for (Attack existingAttack : p.getAttacks()) {
+                                            if (existingAttack.getName().equalsIgnoreCase(atkName)) {
+                                                isAttackDuplicated = true;
+                                                break;
+                                            }
+                                        }
+                                    }
+
+                                    if (isAttackDuplicated) {
+                                        System.out.print("Error: This attack name already exists for this Pokemon! Enter another name: ");
+                                    } else {
+                                        break;
+                                    }
+                                }
+
+                                int dmg = 0;
+                                while (true) {
+                                    System.out.print("Enter base damage: ");
+                                    try {
+                                        dmg = Integer.parseInt(scanner.nextLine().trim());
+                                        if (dmg >= 0) break;
+                                        System.out.println("Damage cannot be negative.");
+                                    } catch (NumberFormatException e) {
+                                        System.out.println("Invalid input! Please enter numbers only.");
+                                    }
+                                }
+
+                                int acc = 0;
+                                while (true) {
+                                    System.out.print("Enter accuracy (1-100): ");
+                                    try {
+                                        acc = Integer.parseInt(scanner.nextLine().trim());
+                                        if (acc > 0 && acc <= 100) break;
+                                        System.out.println("Accuracy must be between 1 and 100.");
+                                    } catch (NumberFormatException e) {
+                                        System.out.println("Invalid input! Please enter numbers only.");
+                                    }
+                                }
+
+                                p.addAttack(new Attack(atkName, dmg, acc, p.getType()));
+                                System.out.println("Attack added successfully!");
+                                break;
+                            case "5":
+                                System.out.println("\n--- View and Delete Attack ---");
+                                if (p.getAttacks() == null || p.getAttacks().isEmpty()) {
+                                    System.out.println("This Pokemon has no attacks to delete.");
+                                    break;
+                                }
+
+                                System.out.println("Current Attacks for " + p.getName() + ":");
+                                for (int j = 0; j < p.getAttacks().size(); j++) {
+                                    Attack currentAtk = p.getAttacks().get(j);
+                                    System.out.println((j + 1) + ". " + currentAtk.getName() +
+                                            " (Damage: " + currentAtk.getBaseDamage() +
+                                            " | Accuracy: " + currentAtk.getAccuracy() + "%)");
+                                }
+
+                                System.out.print("Enter the number of the attack to delete (0 to return): ");
+                                try {
+                                    int atkInput = Integer.parseInt(scanner.nextLine().trim());
+                                    if (atkInput == 0) {
+                                        System.out.println("Returning to edit menu.");
+                                    } else {
+                                        int atkIndex = atkInput - 1;
+                                        if (atkIndex >= 0 && atkIndex < p.getAttacks().size()) {
+                                            System.out.println("Success! Attack '" + p.getAttacks().get(atkIndex).getName() + "' deleted.");
+                                            p.getAttacks().remove(atkIndex);
+                                        } else {
+                                            System.out.println("Error: Number out of range!");
+                                        }
+                                    }
+                                } catch (NumberFormatException e) {
+                                    System.out.println("Invalid input! Please enter a number.");
+                                }
+                                break;
+                            default:
+                                System.out.println("Invalid option! Please enter a number between 0-5.");
+                                break;
+                        }
+                    }
+                } else {
+                    System.out.println("Error: Number is out of range! Please enter a valid number.\n");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input! Please enter numbers only.\n");
+            }
+        }
+    }
+    // delete existing pokemon----
+    public void deleteExistingPokemon() {
+        System.out.println("\n--- Delete a Pokemon ---");
+        if (pokedex.isEmpty()) {
+            System.out.println("The Pokedex is empty! Nothing to delete.\n");
+            return;
+        }
+        while (true) {
+            for (int i = 0; i < pokedex.size(); i++) {
+                System.out.println((i + 1) + ". " + pokedex.get(i).getName());
+            }
+            System.out.println("0. Return to main menu");
+            System.out.print("Enter the number of the Pokemon you want to delete: ");
+            try {
+                int userInput = Integer.parseInt(scanner.nextLine().trim());
+                if (userInput == 0) {
+                    System.out.println("Returning to main menu.");
+                    break;
+                }
+                int index = userInput - 1;
+                if (index < 0 || index >= pokedex.size()) {
+                    System.out.println("Error: number is out of range! please enter valid number : \n ");
+                } else {
+                    System.out.println("Success!" + pokedex.get(index).getName() + " has been deleted from the Pokedex.\n");
+                    pokedex.remove(index);
+                    break;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input! Please enter numbers only.\n");
+            }
+        }
+    }
+    public void saveToJson() {
+        System.out.println("\n--- Save to JSON ---");
+        if (pokedex.isEmpty()) {
+            System.out.println("The Pokedex is empty! Nothing to save.");
+            return;
+        }
+        try {
+            com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+            mapper.writerWithDefaultPrettyPrinter().writeValue(new java.io.File("pokedex.json"), pokedex);
+            System.out.println("Success! Data has been saved to pokedex.json");
+        } catch (Exception e) {
+            System.out.println("Error saving file: " + e.getMessage());
+        }
+    }
+
+    // ---Load from JSON ---
+    public void loadFromJson() {
+        System.out.println("\n--- Load from File ---");
+        java.io.File file = new java.io.File("pokedex.json");
+        if (!file.exists()) {
+            System.out.println("File not found. Please save data first (option 5).\n");
+        } else {
+            try {
+                com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+                pokedex = mapper.readValue(file, new com.fasterxml.jackson.core.type.TypeReference<ArrayList<Pokemon>>() {});
+                System.out.println("Success! Data has been loaded from pokedex.json");
+                System.out.println("Loaded " + pokedex.size() + " Pokemons.\n");
+            } catch (Exception e) {
+                System.out.println("Error loading file: " + e.getMessage());
+            }
+        }
+    }
+
+    // --- Seed data ---
+    public void seedData() {
+        System.out.println("\n--- Restore to seeded data ---");
+        pokedex.clear();
+
+        Pokemon P1 = new Pokemon("Pikachu", Type.ELECTRIC, 100, 100);
+        P1.addAttack(new Attack ("Thunderbolt", 90, 100, Type.ELECTRIC));
+        P1.addAttack(new Attack("Quick body attack", 50, 100, Type.ELECTRIC));
+        Pokemon P2 = new Pokemon("Charmander" , Type.FIRE, 100, 100);
+        P2.addAttack(new Attack("Golden Fire", 70, 75, Type.FIRE));
+        P2.addAttack(new Attack("Tornado Fire", 90, 90, Type.FIRE));
+        Pokemon P3 = new Pokemon("Squirtle", Type.WATER, 100, 100);
+        P3.addAttack(new Attack("Water Gun", 45, 100, Type.FIRE));
+        P3.addAttack(new Attack("Water Flood", 70, 90, Type.FIRE));
+        Pokemon P4 = new Pokemon("Bulbasaur", Type.GRASS, 100, 100);
+        P4.addAttack(new Attack ("Vine Whip", 50, 100, Type.GRASS));
+        P4.addAttack(new Attack("Flying Leaves" ,65, 95, Type.GRASS));
+        Pokemon P5 = new Pokemon("Butterfly" , Type.AIR, 100 ,100);
+        P5.addAttack(new Attack("Sleep Powder", 100, 50, Type.AIR));
+        P5.addAttack(new Attack("Poison Powder", 100, 50, Type.AIR));
+        Pokemon P6 = new Pokemon("Hitmonchamon", Type.FIGHTING, 100, 100);
+        P6.addAttack(new Attack("Fire Punch", 70, 85,Type.FIGHTING));
+        P6.addAttack(new Attack("Ice Punch", 70, 90,Type.FIGHTING));
+        pokedex.add(P1);
+        pokedex.add(P2);
+        pokedex.add(P3);
+        pokedex.add(P4);
+        pokedex.add(P5);
+        pokedex.add(P6);
+        System.out.println("Success! Data has been restored to seeded data.\n");
+    }
+
+    // --- Auto load
+    public void autoLoad() {
+        java.io.File file = new java.io.File("pokedex.json");
+        if (file.exists()) {
+            loadFromJson();
+        } else {
+            seedData();
+        }
+    }
+}
