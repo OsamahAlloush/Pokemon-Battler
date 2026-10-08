@@ -1,57 +1,66 @@
 package org.example;
 
-public class Attack {
-    private String name;
-    private int baseDamage;
-    private int accuracy;
-    private Type type;
-    public Attack(String name, int baseDamage, int accuracy, Type type) {
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "category", defaultImpl = DamageAttack.class)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = DamageAttack.class, name = "damage"),
+        @JsonSubTypes.Type(value = HealAttack.class, name = "heal")
+})
+public abstract class Attack {
+    protected String name;
+    protected int accuracy;
+    protected Type type;
+
+
+    public Attack() {
+    }
+
+    public Attack(String name, int accuracy, Type type) {
         setName(name);
-        setBaseDamage(baseDamage);
         setAccuracy(accuracy);
         this.type = type;
     }
-    public String getName(){
+
+    public String getName() {
         return name;
     }
-    public void setName(String name){
-        if (name== null || name.trim().isEmpty()) {
+
+    public void setName(String name) {
+        if (name == null || name.trim().isEmpty()) {
             this.name = "Unknown Attack";
-        }
-        else {
+        } else {
             this.name = name;
         }
     }
-    public int getBaseDamage(){
-        return baseDamage;
-    }
-    public void setBaseDamage(int baseDamage){
-        if (baseDamage > 0) {
-            this.baseDamage = baseDamage;
-        } else {
-            this.baseDamage = 1;
-        }
-    }
-    public int getAccuracy(){
+
+    public int getAccuracy() {
         return accuracy;
     }
-    public void setAccuracy(int accuracy){
+
+    public void setAccuracy(int accuracy) {
         if (accuracy >= 0 && accuracy <= 100) {
             this.accuracy = accuracy;
         } else {
             this.accuracy = 100;
         }
     }
-    public Type getType(){
+
+    public Type getType() {
         return type;
     }
-    public void setType(Type type){
-        this.type = type;
-    }@Override
-    public String toString() {
-        return "Attack [name=" + name + ", baseDamage=" + baseDamage + ", accuracy=" + accuracy + ", type=" + type + "]";
-    }
-    public Attack(){
 
+    public void setType(Type type) {
+        this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return "Attack [name=" + name + ", accuracy=" + accuracy + ", type=" + type + "]";
+    }
+
+
+    public abstract void execute(Pokemon attacker, Pokemon defender);
 }
