@@ -10,11 +10,10 @@ public class Main {
 
     public static void main(String[] args) {
         helper.autoLoad();
-        testBattle(scanner);
         boolean isRunning = true;
         while (isRunning) {
             printMenu();
-            int choice = readIntRange(1, 8);
+            int choice = readIntRange(1, 9);
             switch (choice) {
                 case 1:
                     helper.displayAllPokemon();
@@ -35,13 +34,17 @@ public class Main {
                     helper.loadFromJson();
                     break;
                 case 7:
-                    helper.seedData();
+                    helper.startWildBattle();
                     break;
                 case 8:
+                    helper.seedData();
+                    break;
+                case 9:
                     System.out.println("Exit :");
                     helper.saveToJson();
                     isRunning = false;
                     System.out.println("Exiting...");
+                    System.exit(0);
                     break;
             }
         }
@@ -55,9 +58,10 @@ public class Main {
         System.out.println("4. Delete Pokemon");
         System.out.println("5. Save to File");
         System.out.println("6. Load from File");
-        System.out.println("7. Restore to seeded data");
-        System.out.println("8. Exit");
-        System.out.print("Enter your choice (1-8):");
+        System.out.println("7. Battle with a Wild Pokemon");
+        System.out.println("8. Restore to Seeded Data");
+        System.out.println("9. Exit");
+        System.out.print("Enter your choice (1-9):");
     }
 
     static int readIntRange(int min, int max) {
@@ -77,23 +81,5 @@ public class Main {
 
         }
     }
-    public static void testBattle(Scanner scanner) {
-        System.out.println("\n--- Loading Battle Test ---");
 
-
-        Pokemon myPokemon = new Pokemon("Pikachu", null, 100, 100);
-        myPokemon.addAttack(new DamageAttack("Thunderbolt", 35, 100, null));
-        myPokemon.addAttack(new HealAttack("Rest", 40, 100, null));
-
-        Pokemon wildPokemon = new Pokemon("Charizard", null, 120, 120);
-        wildPokemon.addAttack(new DamageAttack("Flamethrower", 30, 100, null));
-
-
-        Fighter player = new HumanPlayer(myPokemon);
-        Fighter cpu = new CpuPlayer(wildPokemon);
-
-
-        BattleEngine engine = new BattleEngine();
-        engine.startBattle(player, cpu, scanner);
-    }
 }

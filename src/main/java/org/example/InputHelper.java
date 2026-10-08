@@ -123,6 +123,15 @@ public class InputHelper {
             if (addAttackChoice.equals("n") || addAttackChoice.equals("no")) {
                 break;
             } else if (addAttackChoice.equals("y") || addAttackChoice.equals("yes")) {
+
+                System.out.println("What kind of attack? 1. Damage  2. Healing");
+                String attackStyle = scanner.nextLine().trim();
+
+                if (!attackStyle.equals("1") && !attackStyle.equals("2")) {
+                    System.out.println("Invalid choice! Attack creation canceled.");
+                    continue;
+                }
+
                 System.out.print("Enter attack name: ");
                 String atkName;
                 while (true) {
@@ -146,13 +155,19 @@ public class InputHelper {
                         break;
                     }
                 }
-                int dmg = 0;
+
+                int effectValue = 0;
                 while (true) {
-                    System.out.print("Enter base damage: ");
+                    if (attackStyle.equals("1")) {
+                        System.out.print("Enter base damage: ");
+                    } else {
+                        System.out.print("Enter heal amount: ");
+                    }
+
                     try {
-                        dmg = Integer.parseInt(scanner.nextLine().trim());
-                        if (dmg >= 0) break;
-                        System.out.println("Damage cannot be negative.");
+                        effectValue = Integer.parseInt(scanner.nextLine().trim());
+                        if (effectValue >= 0) break;
+                        System.out.println("Value cannot be negative.");
                     } catch (NumberFormatException e) {
                         System.out.println("Invalid input! Please enter numbers only.");
                     }
@@ -170,10 +185,13 @@ public class InputHelper {
                     }
                 }
 
-                newPokemon.addAttack(new DamageAttack(atkName, dmg, acc, newPokemon.getType()));
 
-            } else {
-                System.out.println("Invalid choice! Please answer with 'y' or 'n'.");
+                if (attackStyle.equals("1")) {
+                    newPokemon.addAttack(new DamageAttack(atkName, effectValue, acc, newPokemon.getType()));
+                } else {
+                    newPokemon.addAttack(new HealAttack(atkName, effectValue, acc, newPokemon.getType()));
+                }
+
             }
         }
 
@@ -293,6 +311,14 @@ public class InputHelper {
                                     break;
                                 }
 
+                                System.out.println("What kind of attack? 1. Damage  2. Healing");
+                                String attackStyle = scanner.nextLine().trim();
+
+                                if (!attackStyle.equals("1") && !attackStyle.equals("2")) {
+                                    System.out.println("Invalid choice! Returning to menu...");
+                                    break;
+                                }
+
                                 String atkName;
                                 while (true) {
                                     System.out.print("Enter attack name: ");
@@ -319,13 +345,17 @@ public class InputHelper {
                                     }
                                 }
 
-                                int dmg = 0;
+                                int effectValue = 0;
                                 while (true) {
-                                    System.out.print("Enter base damage: ");
+                                    if (attackStyle.equals("1")) {
+                                        System.out.print("Enter base damage: ");
+                                    } else {
+                                        System.out.print("Enter heal amount: ");
+                                    }
                                     try {
-                                        dmg = Integer.parseInt(scanner.nextLine().trim());
-                                        if (dmg >= 0) break;
-                                        System.out.println("Damage cannot be negative.");
+                                        effectValue = Integer.parseInt(scanner.nextLine().trim());
+                                        if (effectValue >= 0) break;
+                                        System.out.println("Value cannot be negative.");
                                     } catch (NumberFormatException e) {
                                         System.out.println("Invalid input! Please enter numbers only.");
                                     }
@@ -343,7 +373,11 @@ public class InputHelper {
                                     }
                                 }
 
-                                p.addAttack(new DamageAttack(atkName, dmg, acc, p.getType()));
+                                if (attackStyle.equals("1")) {
+                                    p.addAttack(new DamageAttack(atkName, effectValue, acc, p.getType()));
+                                } else {
+                                    p.addAttack(new HealAttack(atkName, effectValue, acc, p.getType()));
+                                }
                                 System.out.println("Attack added successfully!");
                                 break;
                             case "5":
@@ -481,8 +515,8 @@ public class InputHelper {
         P2.addAttack(new DamageAttack("Tornado Fire", 90, 90, Type.FIRE));
 
         Pokemon P3 = new Pokemon("Squirtle", Type.WATER, 100, 100);
-        P3.addAttack(new DamageAttack("Water Gun", 45, 100, Type.FIRE));
-        P3.addAttack(new DamageAttack("Water Flood", 70, 90, Type.FIRE));
+        P3.addAttack(new DamageAttack("Water Gun", 45, 100, Type.WATER));
+        P3.addAttack(new DamageAttack("Water Flood", 70, 90, Type.WATER));
 
         Pokemon P4 = new Pokemon("Bulbasaur", Type.GRASS, 100, 100);
         P4.addAttack(new DamageAttack("Vine Whip", 50, 100, Type.GRASS));
@@ -513,5 +547,61 @@ public class InputHelper {
         } else {
             seedData();
         }
+    }
+
+    public void startWildBattle() {
+        System.out.println("\n--- Wild Pokemon Battle ---");
+
+        if (pokedex.isEmpty()) {
+            System.out.println("Error: Your Pokedex is empty! You need at least one Pokemon to battle.");
+            return;
+        }
+
+        System.out.println("Choose your fighter:");
+        for (int i = 0; i < pokedex.size(); i++) {
+            System.out.println((i + 1) + ". " + pokedex.get(i).getName() + " (HP: " + pokedex.get(i).getCurrentHp() + "/" + pokedex.get(i).getMaxHp() + ")");
+        }
+        System.out.println("0. Cancel and go back");
+        System.out.print("Enter Pokemon number: ");
+
+        int choice;
+        try {
+            choice = Integer.parseInt(scanner.nextLine().trim());
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input! Returning to menu...");
+            return;
+        }
+
+        if (choice == 0) {
+            System.out.println("Battle canceled.");
+            return;
+        }
+
+        if (choice < 1 || choice > pokedex.size()) {
+            System.out.println("Error: Invalid selection! Returning to menu...");
+            return;
+        }
+
+        Pokemon myPokemon = pokedex.get(choice - 1);
+
+        if (myPokemon.getCurrentHp() <= 0) {
+            System.out.println("Error: " + myPokemon.getName() + " has fainted (0 HP) and cannot fight! Edit it and heal first.");
+            return;
+        }
+
+        if (myPokemon.getAttacks() == null || myPokemon.getAttacks().isEmpty()) {
+            System.out.println("Error: " + myPokemon.getName() + " has no attacks! Edit your Pokemon to add attacks first.");
+            return;
+        }
+
+        Pokemon wildPokemon = new Pokemon("Wild Charizard", Type.FIRE, 120, 120);
+        wildPokemon.addAttack(new DamageAttack("Flamethrower", 40, 100, Type.FIRE));
+        wildPokemon.addAttack(new DamageAttack("Scratch", 20, 100, Type.NORMAL));
+
+        Fighter player = new HumanPlayer(myPokemon);
+        Fighter cpu = new CpuPlayer(wildPokemon);
+
+        BattleEngine engine = new BattleEngine();
+        engine.startBattle(player, cpu, scanner);
     }
 }
