@@ -594,9 +594,59 @@ public class InputHelper {
             return;
         }
 
-        Pokemon wildPokemon = new Pokemon("Wild Charizard", Type.FIRE, 120, 120);
-        wildPokemon.addAttack(new DamageAttack("Flamethrower", 40, 100, Type.FIRE));
-        wildPokemon.addAttack(new DamageAttack("Scratch", 20, 100, Type.NORMAL));
+
+        ArrayList<Pokemon> wildPool = new ArrayList<>();
+
+        // --- Wild Pokemon ---
+        Pokemon w1 = new Pokemon("Wild Pidgey", Type.AIR, 60, 60);
+        w1.addAttack(new DamageAttack("Gust", 20, 100, Type.AIR));
+
+        Pokemon w2 = new Pokemon("Wild Geodude", Type.FIGHTING, 90, 90);
+        w2.addAttack(new DamageAttack("Rock Throw", 30, 90, Type.FIGHTING));
+
+        Pokemon w3 = new Pokemon("Boss Mewtwo", Type.DARK, 150, 150);
+        w3.addAttack(new DamageAttack("Shadow Ball", 50, 100, Type.DARK));
+        w3.addAttack(new HealAttack("Recover", 40, 100, Type.DARK));
+
+        Pokemon w4 = new Pokemon("Wild Charizard", Type.FIRE, 120, 120);
+        w4.addAttack(new DamageAttack("Flamethrower", 40, 100, Type.FIRE));
+        w4.addAttack(new DamageAttack("Scratch", 20, 100, Type.NORMAL));
+
+
+        Pokemon w5 = new Pokemon("Wild Pikachu", Type.ELECTRIC, 80, 80);
+        w5.addAttack(new DamageAttack("Thunder Shock", 35, 100, Type.ELECTRIC));
+        w5.addAttack(new HealAttack("Rest", 30, 100, Type.NORMAL));
+
+        Pokemon w6 = new Pokemon("Wild Snorlax", Type.NORMAL, 140, 140);
+        w6.addAttack(new DamageAttack("Body Slam", 45, 90, Type.NORMAL));
+        w6.addAttack(new HealAttack("Eat Berry", 50, 100, Type.NORMAL));
+
+        Pokemon w7 = new Pokemon("Wild Gengar", Type.DARK, 100, 100);
+        w7.addAttack(new DamageAttack("Shadow Punch", 40, 100, Type.DARK));
+        w7.addAttack(new DamageAttack("Lick", 25, 100, Type.DARK));
+
+        Pokemon w8 = new Pokemon("Wild Venusaur", Type.GRASS, 130, 130);
+        w8.addAttack(new DamageAttack("Solar Beam", 60, 80, Type.GRASS));
+        w8.addAttack(new HealAttack("Synthesis", 40, 100, Type.GRASS));
+
+        Pokemon w9 = new Pokemon("Wild Blastoise", Type.WATER, 130, 130);
+        w9.addAttack(new DamageAttack("Hydro Pump", 65, 80, Type.WATER));
+        w9.addAttack(new DamageAttack("Bite", 35, 100, Type.NORMAL));
+
+        wildPool.add(w1);
+        wildPool.add(w2);
+        wildPool.add(w3);
+        wildPool.add(w4);
+        wildPool.add(w5);
+        wildPool.add(w6);
+        wildPool.add(w7);
+        wildPool.add(w8);
+        wildPool.add(w9);
+
+        java.util.Random rand = new java.util.Random();
+        Pokemon wildPokemon = wildPool.get(rand.nextInt(wildPool.size()));
+
+        System.out.println("\n!!! A wild " + wildPokemon.getName() + " appeared !!!");
 
         Fighter player = new HumanPlayer(myPokemon);
         Fighter cpu = new CpuPlayer(wildPokemon);
