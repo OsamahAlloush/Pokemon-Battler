@@ -1,7 +1,5 @@
 package org.example;
 
-
-
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -27,7 +25,14 @@ public class InputHelper {
                 if (p.getAttacks() != null && !p.getAttacks().isEmpty()) {
                     System.out.print("   Attacks: ");
                     for (int j = 0; j < p.getAttacks().size(); j++) {
-                        System.out.print(p.getAttacks().get(j).getName() + " (" + p.getAttacks().get(j).getBaseDamage() + " dmg)");
+                        Attack atk = p.getAttacks().get(j);
+
+                        if (atk instanceof DamageAttack) {
+                            System.out.print(atk.getName() + " (" + ((DamageAttack) atk).getBaseDamage() + " dmg)");
+                        } else if (atk instanceof HealAttack) {
+                            System.out.print(atk.getName() + " (" + ((HealAttack) atk).getHealAmount() + " heal)");
+                        }
+
                         if (j < p.getAttacks().size() - 1) {
                             System.out.print(" | ");
                         }
@@ -165,7 +170,7 @@ public class InputHelper {
                     }
                 }
 
-                newPokemon.addAttack(new Attack(atkName, dmg, acc, newPokemon.getType()));
+                newPokemon.addAttack(new DamageAttack(atkName, dmg, acc, newPokemon.getType()));
 
             } else {
                 System.out.println("Invalid choice! Please answer with 'y' or 'n'.");
@@ -175,6 +180,7 @@ public class InputHelper {
         pokedex.add(newPokemon);
         System.out.println("\nSuccess! " + newName + " has been completely added to the Pokedex.\n");
     }
+
     // 3. edit pokemon
     public void editExistingPokemon() {
         System.out.println("\n--- Edit Pokemon ---");
@@ -296,7 +302,6 @@ public class InputHelper {
                                         continue;
                                     }
 
-
                                     boolean isAttackDuplicated = false;
                                     if (p.getAttacks() != null) {
                                         for (Attack existingAttack : p.getAttacks()) {
@@ -338,7 +343,7 @@ public class InputHelper {
                                     }
                                 }
 
-                                p.addAttack(new Attack(atkName, dmg, acc, p.getType()));
+                                p.addAttack(new DamageAttack(atkName, dmg, acc, p.getType()));
                                 System.out.println("Attack added successfully!");
                                 break;
                             case "5":
@@ -351,8 +356,16 @@ public class InputHelper {
                                 System.out.println("Current Attacks for " + p.getName() + ":");
                                 for (int j = 0; j < p.getAttacks().size(); j++) {
                                     Attack currentAtk = p.getAttacks().get(j);
+
+                                    String effectStr = "";
+                                    if (currentAtk instanceof DamageAttack) {
+                                        effectStr = "Damage: " + ((DamageAttack) currentAtk).getBaseDamage();
+                                    } else if (currentAtk instanceof HealAttack) {
+                                        effectStr = "Heal: " + ((HealAttack) currentAtk).getHealAmount();
+                                    }
+
                                     System.out.println((j + 1) + ". " + currentAtk.getName() +
-                                            " (Damage: " + currentAtk.getBaseDamage() +
+                                            " (" + effectStr +
                                             " | Accuracy: " + currentAtk.getAccuracy() + "%)");
                                 }
 
@@ -387,6 +400,7 @@ public class InputHelper {
             }
         }
     }
+
     // delete existing pokemon----
     public void deleteExistingPokemon() {
         System.out.println("\n--- Delete a Pokemon ---");
@@ -419,6 +433,7 @@ public class InputHelper {
             }
         }
     }
+
     public void saveToJson() {
         System.out.println("\n--- Save to JSON ---");
         if (pokedex.isEmpty()) {
@@ -458,23 +473,29 @@ public class InputHelper {
         pokedex.clear();
 
         Pokemon P1 = new Pokemon("Pikachu", Type.ELECTRIC, 100, 100);
-        P1.addAttack(new Attack ("Thunderbolt", 90, 100, Type.ELECTRIC));
-        P1.addAttack(new Attack("Quick body attack", 50, 100, Type.ELECTRIC));
+        P1.addAttack(new DamageAttack("Thunderbolt", 90, 100, Type.ELECTRIC));
+        P1.addAttack(new DamageAttack("Quick body attack", 50, 100, Type.ELECTRIC));
+
         Pokemon P2 = new Pokemon("Charmander" , Type.FIRE, 100, 100);
-        P2.addAttack(new Attack("Golden Fire", 70, 75, Type.FIRE));
-        P2.addAttack(new Attack("Tornado Fire", 90, 90, Type.FIRE));
+        P2.addAttack(new DamageAttack("Golden Fire", 70, 75, Type.FIRE));
+        P2.addAttack(new DamageAttack("Tornado Fire", 90, 90, Type.FIRE));
+
         Pokemon P3 = new Pokemon("Squirtle", Type.WATER, 100, 100);
-        P3.addAttack(new Attack("Water Gun", 45, 100, Type.FIRE));
-        P3.addAttack(new Attack("Water Flood", 70, 90, Type.FIRE));
+        P3.addAttack(new DamageAttack("Water Gun", 45, 100, Type.FIRE));
+        P3.addAttack(new DamageAttack("Water Flood", 70, 90, Type.FIRE));
+
         Pokemon P4 = new Pokemon("Bulbasaur", Type.GRASS, 100, 100);
-        P4.addAttack(new Attack ("Vine Whip", 50, 100, Type.GRASS));
-        P4.addAttack(new Attack("Flying Leaves" ,65, 95, Type.GRASS));
+        P4.addAttack(new DamageAttack("Vine Whip", 50, 100, Type.GRASS));
+        P4.addAttack(new HealAttack("Synthesis", 40, 100, Type.GRASS));
+
         Pokemon P5 = new Pokemon("Butterfly" , Type.AIR, 100 ,100);
-        P5.addAttack(new Attack("Sleep Powder", 100, 50, Type.AIR));
-        P5.addAttack(new Attack("Poison Powder", 100, 50, Type.AIR));
+        P5.addAttack(new DamageAttack("Sleep Powder", 100, 50, Type.AIR));
+        P5.addAttack(new DamageAttack("Poison Powder", 100, 50, Type.AIR));
+
         Pokemon P6 = new Pokemon("Hitmonchamon", Type.FIGHTING, 100, 100);
-        P6.addAttack(new Attack("Fire Punch", 70, 85,Type.FIGHTING));
-        P6.addAttack(new Attack("Ice Punch", 70, 90,Type.FIGHTING));
+        P6.addAttack(new DamageAttack("Fire Punch", 70, 85, Type.FIGHTING));
+        P6.addAttack(new DamageAttack("Ice Punch", 70, 90, Type.FIGHTING));
+
         pokedex.add(P1);
         pokedex.add(P2);
         pokedex.add(P3);

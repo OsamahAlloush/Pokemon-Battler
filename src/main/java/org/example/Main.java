@@ -10,6 +10,7 @@ public class Main {
 
     public static void main(String[] args) {
         helper.autoLoad();
+        testBattle(scanner);
         boolean isRunning = true;
         while (isRunning) {
             printMenu();
@@ -75,5 +76,24 @@ public class Main {
             }
 
         }
+    }
+    public static void testBattle(Scanner scanner) {
+        System.out.println("\n--- Loading Battle Test ---");
+
+
+        Pokemon myPokemon = new Pokemon("Pikachu", null, 100, 100);
+        myPokemon.addAttack(new DamageAttack("Thunderbolt", 35, 100, null));
+        myPokemon.addAttack(new HealAttack("Rest", 40, 100, null));
+
+        Pokemon wildPokemon = new Pokemon("Charizard", null, 120, 120);
+        wildPokemon.addAttack(new DamageAttack("Flamethrower", 30, 100, null));
+
+
+        Fighter player = new HumanPlayer(myPokemon);
+        Fighter cpu = new CpuPlayer(wildPokemon);
+
+
+        BattleEngine engine = new BattleEngine();
+        engine.startBattle(player, cpu, scanner);
     }
 }
