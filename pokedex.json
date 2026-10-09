@@ -83,7 +83,7 @@
   "type" : "AIR",
   "maxHp" : 100,
   "currentHp" : 100,
-  "wins" : 1,
+  "wins" : 2,
   "losses" : 0,
   "attacks" : [ {
     "category" : "damage",

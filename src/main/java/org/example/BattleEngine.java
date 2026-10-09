@@ -57,6 +57,8 @@ public class BattleEngine {
             p1.setWins(p1.getWins() + 1);
             System.out.println(p1.getName() + " wins! Stats Updated.");
         }
+        p1.setCurrentHp(p1.getMaxHp());
+        p2.setCurrentHp(p2.getMaxHp());
 
         System.out.println("=== BATTLE END ===");
     }

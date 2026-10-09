@@ -62,7 +62,7 @@ public class Pokemon {
             System.out.println("Error: This Pokemon already has 4 attacks! You cannot add more.");
         } else {
             this.attacks.add(attack);
-            System.out.println("Attack added successfully!");
+           // System.out.println("Attack added successfully!");
         }
     }
 }

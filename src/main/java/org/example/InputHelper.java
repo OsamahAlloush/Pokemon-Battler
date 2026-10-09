@@ -508,12 +508,12 @@ public class InputHelper {
         pokedex.clear();
 
         Pokemon P1 = new Pokemon("Pikachu", Type.ELECTRIC, 100, 100);
-        P1.addAttack(new DamageAttack("Thunderbolt", 90, 100, Type.ELECTRIC));
+        P1.addAttack(new DamageAttack("Thunderbolt", 75, 100, Type.ELECTRIC));
         P1.addAttack(new DamageAttack("Quick body attack", 50, 100, Type.ELECTRIC));
 
         Pokemon P2 = new Pokemon("Charmander" , Type.FIRE, 100, 100);
-        P2.addAttack(new DamageAttack("Golden Fire", 70, 75, Type.FIRE));
-        P2.addAttack(new DamageAttack("Tornado Fire", 90, 90, Type.FIRE));
+        P2.addAttack(new DamageAttack("Golden Fire", 55, 75, Type.FIRE));
+        P2.addAttack(new DamageAttack("Tornado Fire", 65, 90, Type.FIRE));
 
         Pokemon P3 = new Pokemon("Squirtle", Type.WATER, 100, 100);
         P3.addAttack(new DamageAttack("Water Gun", 45, 100, Type.WATER));
@@ -524,12 +524,12 @@ public class InputHelper {
         P4.addAttack(new HealAttack("Synthesis", 40, 100, Type.GRASS));
 
         Pokemon P5 = new Pokemon("Butterfly" , Type.AIR, 100 ,100);
-        P5.addAttack(new DamageAttack("Sleep Powder", 100, 50, Type.AIR));
-        P5.addAttack(new DamageAttack("Poison Powder", 100, 50, Type.AIR));
+        P5.addAttack(new DamageAttack("Sleep Powder", 30, 50, Type.AIR));
+        P5.addAttack(new DamageAttack("Poison Powder",  25, 50, Type.AIR));
 
         Pokemon P6 = new Pokemon("Hitmonchamon", Type.FIGHTING, 100, 100);
-        P6.addAttack(new DamageAttack("Fire Punch", 70, 85, Type.FIGHTING));
-        P6.addAttack(new DamageAttack("Ice Punch", 70, 90, Type.FIGHTING));
+        P6.addAttack(new DamageAttack("Fire Punch", 45, 85, Type.FIGHTING));
+        P6.addAttack(new DamageAttack("Ice Punch", 50, 90, Type.FIGHTING));
 
         pokedex.add(P1);
         pokedex.add(P2);
