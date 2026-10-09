@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "category", defaultImpl = DamageAttack.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,include = JsonTypeInfo.As.PROPERTY,  property = "category", defaultImpl = DamageAttack.class)
 @JsonSubTypes({
         @JsonSubTypes.Type(value = DamageAttack.class, name = "damage"),
         @JsonSubTypes.Type(value = HealAttack.class, name = "heal")
