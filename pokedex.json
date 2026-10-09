@@ -3,6 +3,8 @@
   "type" : "ELECTRIC",
   "maxHp" : 100,
   "currentHp" : 100,
+  "wins" : 0,
+  "losses" : 0,
   "attacks" : [ {
     "category" : "damage",
     "name" : "Thunderbolt",
@@ -21,6 +23,8 @@
   "type" : "FIRE",
   "maxHp" : 100,
   "currentHp" : 100,
+  "wins" : 0,
+  "losses" : 0,
   "attacks" : [ {
     "category" : "damage",
     "name" : "Golden Fire",
@@ -39,6 +43,8 @@
   "type" : "WATER",
   "maxHp" : 100,
   "currentHp" : 0,
+  "wins" : 0,
+  "losses" : 0,
   "attacks" : [ {
     "category" : "damage",
     "name" : "Water Gun",
@@ -57,6 +63,8 @@
   "type" : "GRASS",
   "maxHp" : 100,
   "currentHp" : 60,
+  "wins" : 0,
+  "losses" : 0,
   "attacks" : [ {
     "category" : "damage",
     "name" : "Vine Whip",
@@ -75,6 +83,8 @@
   "type" : "AIR",
   "maxHp" : 100,
   "currentHp" : 100,
+  "wins" : 1,
+  "losses" : 0,
   "attacks" : [ {
     "category" : "damage",
     "name" : "Sleep Powder",
@@ -93,6 +103,8 @@
   "type" : "FIGHTING",
   "maxHp" : 100,
   "currentHp" : 50,
+  "wins" : 0,
+  "losses" : 0,
   "attacks" : [ {
     "category" : "damage",
     "name" : "Fire Punch",

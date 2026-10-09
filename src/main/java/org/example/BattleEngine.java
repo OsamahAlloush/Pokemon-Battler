@@ -28,7 +28,6 @@ public class BattleEngine {
 
             if (isPlayerTurn) {
                 Attack p1Attack = player.chooseAttack(scanner);
-
                 p1Attack.execute(p1, p2);
 
                 if (p2.getCurrentHp() == 0) {
@@ -36,7 +35,6 @@ public class BattleEngine {
                     break;
                 }
             } else {
-
                 Attack cpuAttack = cpu.chooseAttack(scanner);
                 cpuAttack.execute(p2, p1);
 
@@ -47,6 +45,17 @@ public class BattleEngine {
             }
 
             isPlayerTurn = !isPlayerTurn;
+        }
+
+        if (p1.getCurrentHp() <= 0) {
+            p1.setLosses(p1.getLosses() + 1);
+            p2.setWins(p2.getWins() + 1);
+            System.out.println(p2.getName() + " wins! Stats Updated.");
+
+        } else if (p2.getCurrentHp() <= 0) {
+            p2.setLosses(p2.getLosses() + 1);
+            p1.setWins(p1.getWins() + 1);
+            System.out.println(p1.getName() + " wins! Stats Updated.");
         }
 
         System.out.println("=== BATTLE END ===");

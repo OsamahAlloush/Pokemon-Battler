@@ -7,6 +7,8 @@ public class Pokemon {
     private Type type;
     private int maxHp;
     private int currentHp;
+    private int wins;
+    private int losses;
     private ArrayList<Attack> attacks;
 
 
@@ -35,6 +37,11 @@ public class Pokemon {
     public int getMaxHp() {
         return maxHp; }
     public void setMaxHp(int maxHp) { this.maxHp = maxHp; }
+    public int getWins() {return wins;}
+
+    public void setWins(int wins) {this.wins = wins;}
+    public int getLosses() {return losses;}
+    public void setLosses(int losses) {this.losses = losses;}
 
     public int getCurrentHp() {
         return currentHp; }

@@ -21,6 +21,7 @@ public class InputHelper {
                 Pokemon p = pokedex.get(i);
                 System.out.println((i + 1) + ". " + p.getName() + " (Type: " + p.getType() +
                         " | HP: " + p.getCurrentHp() + "/" + p.getMaxHp() + ")");
+                System.out.println("Stats: [Wins: " + p.getWins() + " | Losses: " + p.getLosses() + "]");
 
                 if (p.getAttacks() != null && !p.getAttacks().isEmpty()) {
                     System.out.print("   Attacks: ");
