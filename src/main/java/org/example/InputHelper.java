@@ -488,17 +488,23 @@ public class InputHelper {
     public void loadFromJson() {
         System.out.println("\n--- Load from File ---");
         java.io.File file = new java.io.File("pokedex.json");
+
         if (!file.exists()) {
             System.out.println("File not found. Please save data first (option 5).\n");
-        } else {
-            try {
-                com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
-                pokedex = mapper.readValue(file, new com.fasterxml.jackson.core.type.TypeReference<ArrayList<Pokemon>>() {});
-                System.out.println("Success! Data has been loaded from pokedex.json");
-                System.out.println("Loaded " + pokedex.size() + " Pokemons.\n");
-            } catch (Exception e) {
-                System.out.println("Error loading file: " + e.getMessage());
-            }
+            return;
+        }
+
+        try {
+            com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+            pokedex = mapper.readValue(file, new com.fasterxml.jackson.core.type.TypeReference<ArrayList<Pokemon>>() {});
+            System.out.println("Success! Data has been loaded from pokedex.json");
+            System.out.println("Loaded " + pokedex.size() + " Pokemons.\n");
+
+        } catch (com.fasterxml.jackson.core.JsonParseException | com.fasterxml.jackson.databind.JsonMappingException e) {
+            System.out.println("Crash prevented! The save file (pokedex.json) is corrupt or invalid.");
+
+        } catch (Exception e) {
+            System.out.println("Error loading file: " + e.getMessage());
         }
     }
 
@@ -563,14 +569,15 @@ public class InputHelper {
             System.out.println((i + 1) + ". " + pokedex.get(i).getName() + " (HP: " + pokedex.get(i).getCurrentHp() + "/" + pokedex.get(i).getMaxHp() + ")");
         }
         System.out.println("0. Cancel and go back");
+        int choice = -1;
+        while (true) {
         System.out.print("Enter Pokemon number: ");
 
-        int choice;
         try {
             choice = Integer.parseInt(scanner.nextLine().trim());
         } catch (NumberFormatException e) {
-            System.out.println("Invalid input! Returning to menu...");
-            return;
+            System.out.println("Invalid input! Please enter a number : ");
+            continue;
         }
 
         if (choice == 0) {
@@ -579,10 +586,11 @@ public class InputHelper {
         }
 
         if (choice < 1 || choice > pokedex.size()) {
-            System.out.println("Error: Invalid selection! Returning to menu...");
-            return;
+            System.out.println("Error: Invalid selection! Please enter a number between 1 and " + pokedex.size() + " :");
+            continue;
         }
-
+break;
+        }
         Pokemon myPokemon = pokedex.get(choice - 1);
 
         if (myPokemon.getCurrentHp() <= 0) {

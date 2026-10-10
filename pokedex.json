@@ -3,7 +3,7 @@
   "type" : "ELECTRIC",
   "maxHp" : 100,
   "currentHp" : 100,
-  "wins" : 2,
+  "wins" : 0,
   "losses" : 0,
   "attacks" : [ {
     "category" : "damage",
@@ -17,12 +17,6 @@
     "accuracy" : 100,
     "type" : "ELECTRIC",
     "baseDamage" : 50
-  }, {
-    "category" : "heal",
-    "name" : "Healing",
-    "accuracy" : 50,
-    "type" : "ELECTRIC",
-    "healAmount" : 50
   } ]
 }, {
   "name" : "Charmander",
@@ -124,4 +118,12 @@
     "type" : "FIGHTING",
     "baseDamage" : 50
   } ]
+}, {
+  "name" : "sama",
+  "type" : "FIRE",
+  "maxHp" : 122,
+  "currentHp" : 122,
+  "wins" : 0,
+  "losses" : 0,
+  "attacks" : [ ]
 } ]

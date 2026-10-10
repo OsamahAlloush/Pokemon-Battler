@@ -1,6 +1,9 @@
 
 package org.example;
 
+import java.util.Random;
+import java.util.random.RandomGenerator;
+
 public class HealAttack extends Attack {
     private int healAmount;
 
@@ -26,6 +29,14 @@ public class HealAttack extends Attack {
 
     @Override
     public void execute(Pokemon attacker, Pokemon defender) {
+        Random random = new Random();
+        int hitChance = random.nextInt(100) + 1;
+                if (hitChance > this.getAccuracy())
+        {
+            System.out.println(attacker.getName() + " missed!");
+            return;
+
+        }
         int currentHealth = attacker.getCurrentHp();
         int newHp = Math.min(attacker.getMaxHp(), currentHealth + healAmount);
         attacker.setCurrentHp(newHp);

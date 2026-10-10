@@ -28,6 +28,10 @@ public class BattleEngine {
 
             if (isPlayerTurn) {
                 Attack p1Attack = player.chooseAttack(scanner);
+                if (p1Attack == null) {
+                    System.out.println("You fled the battle!");
+                    break;
+                }
                 p1Attack.execute(p1, p2);
 
                 if (p2.getCurrentHp() == 0) {
