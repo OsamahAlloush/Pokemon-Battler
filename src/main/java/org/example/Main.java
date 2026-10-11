@@ -13,7 +13,7 @@ public class Main {
         boolean isRunning = true;
         while (isRunning) {
             printMenu();
-            int choice = readIntRange(1, 9);
+            int choice = readIntRange(1, 10);
             switch (choice) {
                 case 1:
                     helper.displayAllPokemon();
@@ -40,12 +40,16 @@ public class Main {
                     helper.seedData();
                     break;
                 case 9:
-                    System.out.println("Exit :");
-                    helper.saveToJson();
-                    isRunning = false;
-                    System.out.println("Exiting...");
-                    System.exit(0);
+                    helper.showStatistics();
                     break;
+
+                case 10:
+                System.out.println("Exit :");
+                helper.saveToJson();
+                isRunning = false;
+                System.out.println("Exiting...");
+                System.exit(0);
+                break;
             }
         }
     }
@@ -60,8 +64,9 @@ public class Main {
         System.out.println("6. Load from File");
         System.out.println("7. Battle with a Wild Pokemon");
         System.out.println("8. Restore to Seeded Data");
-        System.out.println("9. Exit");
-        System.out.print("Enter your choice (1-9):");
+        System.out.println("9. Show Statistics");
+        System.out.println("10. Exit ");
+        System.out.print("Enter your choice (1-10):");
     }
 
     static int readIntRange(int min, int max) {

@@ -10,12 +10,14 @@
     "name" : "Thunderbolt",
     "accuracy" : 100,
     "type" : "ELECTRIC",
+    "usageCount" : 0,
     "baseDamage" : 75
   }, {
     "category" : "damage",
     "name" : "Quick body attack",
     "accuracy" : 100,
     "type" : "ELECTRIC",
+    "usageCount" : 0,
     "baseDamage" : 50
   } ]
 }, {
@@ -30,12 +32,14 @@
     "name" : "Golden Fire",
     "accuracy" : 75,
     "type" : "FIRE",
+    "usageCount" : 0,
     "baseDamage" : 55
   }, {
     "category" : "damage",
     "name" : "Tornado Fire",
     "accuracy" : 90,
     "type" : "FIRE",
+    "usageCount" : 0,
     "baseDamage" : 65
   } ]
 }, {
@@ -50,12 +54,14 @@
     "name" : "Water Gun",
     "accuracy" : 100,
     "type" : "WATER",
+    "usageCount" : 0,
     "baseDamage" : 45
   }, {
     "category" : "damage",
     "name" : "Water Flood",
     "accuracy" : 90,
     "type" : "WATER",
+    "usageCount" : 0,
     "baseDamage" : 70
   } ]
 }, {
@@ -70,12 +76,14 @@
     "name" : "Vine Whip",
     "accuracy" : 100,
     "type" : "GRASS",
+    "usageCount" : 0,
     "baseDamage" : 50
   }, {
     "category" : "heal",
     "name" : "Synthesis",
     "accuracy" : 100,
     "type" : "GRASS",
+    "usageCount" : 0,
     "healAmount" : 40
   } ]
 }, {
@@ -84,18 +92,20 @@
   "maxHp" : 100,
   "currentHp" : 100,
   "wins" : 0,
-  "losses" : 0,
+  "losses" : 1,
   "attacks" : [ {
     "category" : "damage",
     "name" : "Sleep Powder",
     "accuracy" : 50,
     "type" : "AIR",
+    "usageCount" : 1,
     "baseDamage" : 30
   }, {
     "category" : "damage",
     "name" : "Poison Powder",
     "accuracy" : 50,
     "type" : "AIR",
+    "usageCount" : 1,
     "baseDamage" : 25
   } ]
 }, {
@@ -103,19 +113,21 @@
   "type" : "FIGHTING",
   "maxHp" : 100,
   "currentHp" : 100,
-  "wins" : 0,
+  "wins" : 2,
   "losses" : 0,
   "attacks" : [ {
     "category" : "damage",
     "name" : "Fire Punch",
     "accuracy" : 85,
     "type" : "FIGHTING",
+    "usageCount" : 2,
     "baseDamage" : 45
   }, {
     "category" : "damage",
     "name" : "Ice Punch",
     "accuracy" : 90,
     "type" : "FIGHTING",
+    "usageCount" : 4,
     "baseDamage" : 50
   } ]
 }, {
@@ -123,6 +135,14 @@
   "type" : "FIRE",
   "maxHp" : 122,
   "currentHp" : 122,
+  "wins" : 0,
+  "losses" : 0,
+  "attacks" : [ ]
+}, {
+  "name" : "a",
+  "type" : "NORMAL",
+  "maxHp" : 11,
+  "currentHp" : 11,
   "wins" : 0,
   "losses" : 0,
   "attacks" : [ ]

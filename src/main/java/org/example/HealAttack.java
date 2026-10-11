@@ -29,6 +29,7 @@ public class HealAttack extends Attack {
 
     @Override
     public void execute(Pokemon attacker, Pokemon defender) {
+        this.setUsageCount(this.getUsageCount() + 1);
         Random random = new Random();
         int hitChance = random.nextInt(100) + 1;
                 if (hitChance > this.getAccuracy())

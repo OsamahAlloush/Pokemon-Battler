@@ -55,6 +55,13 @@ public abstract class Attack {
     public void setType(Type type) {
         this.type = type;
     }
+    private int usageCount = 0;
+    public int getUsageCount() {
+        return usageCount;
+    }
+    public void setUsageCount(int usageCount) {
+        this.usageCount = usageCount;
+    }
 
     @Override
     public String toString() {

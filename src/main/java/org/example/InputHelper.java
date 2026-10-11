@@ -571,25 +571,25 @@ public class InputHelper {
         System.out.println("0. Cancel and go back");
         int choice = -1;
         while (true) {
-        System.out.print("Enter Pokemon number: ");
+            System.out.print("Enter Pokemon number: ");
 
-        try {
-            choice = Integer.parseInt(scanner.nextLine().trim());
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid input! Please enter a number : ");
-            continue;
-        }
+            try {
+                choice = Integer.parseInt(scanner.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input! Please enter a number : ");
+                continue;
+            }
 
-        if (choice == 0) {
-            System.out.println("Battle canceled.");
-            return;
-        }
+            if (choice == 0) {
+                System.out.println("Battle canceled.");
+                return;
+            }
 
-        if (choice < 1 || choice > pokedex.size()) {
-            System.out.println("Error: Invalid selection! Please enter a number between 1 and " + pokedex.size() + " :");
-            continue;
-        }
-break;
+            if (choice < 1 || choice > pokedex.size()) {
+                System.out.println("Error: Invalid selection! Please enter a number between 1 and " + pokedex.size() + " :");
+                continue;
+            }
+            break;
         }
         Pokemon myPokemon = pokedex.get(choice - 1);
 
@@ -663,4 +663,61 @@ break;
         BattleEngine engine = new BattleEngine();
         engine.startBattle(player, cpu, scanner);
     }
-}
+    // Statistics :
+        public void showStatistics() {
+            System.out.println("\n--- 📊 Game Statistics ---");
+            if (pokedex.isEmpty()) {
+                System.out.println("No Pokemons available.");
+                return;
+            }
+
+            int totalWins = 0;
+            int totalLosses = 0;
+            Pokemon mostUsedPokemon = null;
+            int maxBattles = -1;
+            Attack mostUsedAttack = null;
+            int maxAttackUsage = -1;
+
+            for (Pokemon p : pokedex) {
+                int pWins = p.getWins();
+                int pLosses = p.getLosses();
+                int pBattles = pWins + pLosses;
+
+                totalWins += pWins;
+                totalLosses += pLosses;
+
+
+                if (pBattles > maxBattles) {
+                    maxBattles = pBattles;
+                    mostUsedPokemon = p;
+                }
+
+                double ratio = (pLosses == 0) ? pWins : (double) pWins / pLosses;
+                System.out.printf("- %s -> Wins: %d | Losses: %d | W/L Ratio: %.2f\n", p.getName(), pWins, pLosses, ratio);
+
+                if (p.getAttacks() != null) {
+                    for (Attack a : p.getAttacks()) {
+                        if (a.getUsageCount() > maxAttackUsage) {
+                            maxAttackUsage = a.getUsageCount();
+                            mostUsedAttack = a;
+                        }
+                    }
+                }
+            }
+
+            System.out.println("\n--- Overall Totals ---");
+            System.out.println("Total Wins (All Pokemons): " + totalWins);
+            System.out.println("Total Losses (All Pokemons): " + totalLosses);
+
+            if (mostUsedPokemon != null && maxBattles > 0) {
+                System.out.println("Most Used Pokemon: " + mostUsedPokemon.getName() + " (" + maxBattles + " battles)");
+            }
+
+            if (mostUsedAttack != null && maxAttackUsage > 0) {
+                System.out.println("Most Used Attack: " + mostUsedAttack.getName() + " (" + maxAttackUsage + " uses)");
+            } else {
+                System.out.println("Most Used Attack: None yet.");
+            }
+            System.out.println("--------------------------\n");
+        }
+    }

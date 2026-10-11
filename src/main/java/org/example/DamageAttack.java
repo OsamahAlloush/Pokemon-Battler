@@ -25,6 +25,7 @@ public class DamageAttack extends Attack {
 
     @Override
     public void execute(Pokemon attacker, Pokemon defender) {
+        this.setUsageCount(this.getUsageCount() + 1);
         int randomChance = (int) (Math.random() * 100) + 1;
 
         if (randomChance > this.getAccuracy()) {
@@ -62,7 +63,11 @@ public class DamageAttack extends Attack {
             }
         }
 
-
+            int critChance = (int) (Math.random() * 16) + 1;
+        if (critChance == 1) {
+            multiplier *= 2.0;
+            System.out.println(">>> It's a critical hit!");
+        }
         int finalDamage = (int) (baseDamage * multiplier);
         int currentHealth = defender.getCurrentHp();
         int newHp = Math.max(0, currentHealth - finalDamage);
