@@ -25,6 +25,12 @@ public class DamageAttack extends Attack {
 
     @Override
     public void execute(Pokemon attacker, Pokemon defender) {
+        int randomChance = (int) (Math.random() * 100) + 1;
+
+        if (randomChance > this.getAccuracy()) {
+            System.out.println(">>> " + attacker.getName() + " tried to use " + name + ", but it missed!");
+            return;
+        }
         double multiplier = 1.0;
         Type attackType = this.getType();
         Type defenderType = defender.getType();
