@@ -50,10 +50,14 @@ public class InputHelper {
     public void addNewPokemon() {
         System.out.println("\n--- Add a New Pokemon ---");
 
-        System.out.print("Enter Pokemon name: ");
+        System.out.print("Enter Pokemon name: (0 if ypu want to cancel adding a new Pokemon) ");
         String newName;
         while (true) {
             newName = scanner.nextLine().trim();
+            if (newName.equals("0")) {
+                System.out.println(" Adding Pokemon cancelled , Returning to main menu...\n");
+                return;
+            }
             if (!newName.matches("[a-zA-Z ]+")) {
                 System.out.print("Error: Name must contain letters only! Enter name again: ");
                 continue;
@@ -133,10 +137,16 @@ public class InputHelper {
                     continue;
                 }
 
-                System.out.print("Enter attack name: ");
+                System.out.print("Enter attack name: (0 if you want to cancel ): ");
                 String atkName;
+                boolean cancelAttack = false;
                 while (true) {
                     atkName = scanner.nextLine().trim();
+                    if (atkName.equals("0")) {
+                        cancelAttack = true;
+                        System.out.println("Adding attack is cancelled. ");
+                        break;
+                    }
                     if (!atkName.matches("[a-zA-Z ]+")) {
                         System.out.print("Error: Name must contain letters only! Enter name again: ");
                         continue;
@@ -156,7 +166,10 @@ public class InputHelper {
                         break;
                     }
                 }
-
+if (cancelAttack){
+    System.out.println("Attack creation is cancelled. ");
+    continue;
+}
                 int effectValue = 0;
                 while (true) {
                     if (attackStyle.equals("1")) {
@@ -613,7 +626,7 @@ public class InputHelper {
         Pokemon w2 = new Pokemon("Wild Geodude", Type.FIGHTING, 90, 90);
         w2.addAttack(new DamageAttack("Rock Throw", 30, 90, Type.FIGHTING));
 
-        Pokemon w3 = new Pokemon("Boss Mewtwo", Type.DARK, 150, 150);
+        Pokemon w3 = new Pokemon("Wild Mewtwo", Type.DARK, 150, 150);
         w3.addAttack(new DamageAttack("Shadow Ball", 50, 100, Type.DARK));
         w3.addAttack(new HealAttack("Recover", 40, 100, Type.DARK));
 
@@ -665,7 +678,7 @@ public class InputHelper {
     }
     // Statistics :
         public void showStatistics() {
-            System.out.println("\n--- 📊 Game Statistics ---");
+            System.out.println("\n--- Game Statistics ---");
             if (pokedex.isEmpty()) {
                 System.out.println("No Pokemons available.");
                 return;
@@ -692,8 +705,8 @@ public class InputHelper {
                     mostUsedPokemon = p;
                 }
 
-                double ratio = (pLosses == 0) ? pWins : (double) pWins / pLosses;
-                System.out.printf("- %s -> Wins: %d | Losses: %d | W/L Ratio: %.2f\n", p.getName(), pWins, pLosses, ratio);
+                double ratio = (pBattles ==0) ? 0.0 : ((double) pWins / pBattles) *100;
+                System.out.printf("- %s -> Wins: %d | Losses: %d | Win Rate: %.1f%%\n", p.getName(), pWins, pLosses, ratio);
 
                 if (p.getAttacks() != null) {
                     for (Attack a : p.getAttacks()) {

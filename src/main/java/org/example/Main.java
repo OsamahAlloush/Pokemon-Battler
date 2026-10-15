@@ -42,7 +42,6 @@ public class Main {
                 case 9:
                     helper.showStatistics();
                     break;
-
                 case 10:
                 System.out.println("Exit :");
                 helper.saveToJson();
